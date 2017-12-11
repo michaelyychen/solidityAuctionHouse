@@ -19,8 +19,7 @@ Here​​ are​ t​he ​​instructions ​​to ​​install ​​the​ 
 
     sudo ​​npm​ ​-g ​​install ​​truffle ​​mocha ​​web3​​ ethereumjs-testrpc ethereumjs-abi​​ ethereumjs-util​​ bignumber
 3. Get​​ the ​​local​​ test ​​network ​​up​​ and ​​running. <br />
-   ​​Make ​​sure ​​to ​​kill ​​any ​​prior ​​testrpc ​​process ​​and modify ​​the ​​gas limit, <br />
-   the ​​test​ ​cases ​​use​ ​a​​ lot ​​of ​​gas!: testrpc​​ --gasLimit ​​1000000000 ​​&
+   ​​Make ​​sure ​​to ​​kill ​​any ​​prior ​​testrpc ​​process ​​and modify ​​the ​​gas limit, the ​​test​ ​cases ​​use​ ​a​​ lot ​​of ​​gas!: <br /> testrpc​​ --gasLimit ​​1000000000 ​​&
 
 4. To ​​compile ​​your ​​code ​​and ​​run​ ​the ​​provided​​ test​​files.  
    ​​To​​ run ​​an​​ individual ​​test: truffle​​ test ​​test/ArbitrationTest.sol  
