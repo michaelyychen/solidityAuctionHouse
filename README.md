@@ -1,8 +1,8 @@
 # solidityAuctionHouse
 
-Install Instructions
+# Install Instructions
 
-Here​​ are​ t​he ​​instructions ​​to ​​install ​​the​ ​required​​ dependencies ​​and ​​run ​​the ​​tests:
+Here​​ are​ t​he ​​instructions ​​to ​​install ​​the​ ​required​​ dependencies ​​and ​​run ​​the auction simulator:
 1. Install​​​Node.js
 2. Install​​ the​ ​following ​​dependencies ​​for​ ​this​​ project:  
     a.Truffle
