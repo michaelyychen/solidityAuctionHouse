@@ -3,6 +3,11 @@ import "./Auction.sol";
 
 contract VickreyAuction is Auction {
 
+    struct Record{
+      bytes32 bidCommitment;
+      bool refundIssued;
+    }
+
     uint public minimumPrice;
     uint public biddingDeadline;
     uint public revealDeadline;
@@ -10,8 +15,9 @@ contract VickreyAuction is Auction {
     uint internal currentHighest;
     uint internal secondHighest;
 
-    mapping (address => bytes32 ) public bidderRecord;
-    mapping (address => bytes32 ) public refundIssued;
+    event debug (address bidder);
+
+    mapping (address => Record) public bidderRecord;
 
     // constructor
     function VickreyAuction(address _sellerAddress,
@@ -46,11 +52,12 @@ contract VickreyAuction is Auction {
         else if(msg.value > bidDepositAmount)
           msg.sender.transfer(msg.value - bidDepositAmount);
 
-        bidderRecord[msg.sender] = bidCommitment;
+        bidderRecord[msg.sender] = Record(bidCommitment, false);
     }
 
+
     function isExistingBidder(address addr) public returns(bool isExists){
-      return (bidderRecord[addr]!= bytes32(0x0)) ? true : false;
+      return (bidderRecord[addr].bidCommitment!= bytes32(0x0)) ? true : false;
     }
 
     // Check that the bid (msg.value) matches the commitment
@@ -59,12 +66,12 @@ contract VickreyAuction is Auction {
     // If the bid is the new highest known bid, the deposit is returned and the previous high bidder's bid is returned.
     function revealBid(bytes32 nonce) public payable returns(bool isHighestBidder) {
         // Make sure nonce and bid commitment matches
-        require(keccak256(msg.value, nonce) == bidderRecord[msg.sender]);
+        require(keccak256(msg.value, nonce) == bidderRecord[msg.sender].bidCommitment);
         require(time() >= biddingDeadline && time() < revealDeadline);
-        require(refundIssued[msg.sender] == bytes32(0x0));
+        require(bidderRecord[msg.sender].refundIssued == false);
 
         // Prevent issuing refund twice
-        refundIssued[msg.sender] = bytes32(0x1);
+        bidderRecord[msg.sender].refundIssued = true;
 
         if(msg.value < minimumPrice)
           msg.sender.transfer(bidDepositAmount);

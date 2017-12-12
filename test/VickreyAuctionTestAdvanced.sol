@@ -9,10 +9,12 @@ contract VickreyAuctionTestAdvanced {
     VickreyAuctionBidder alice;
     VickreyAuctionBidder bob;
     VickreyAuctionBidder carol;
+    VickreyAuctionBidder david;
     uint bidderCounter;
 
     Timer t;
 
+    event debug (uint initBalance);
     // Adjust this to change the test code's initial balance
     uint public initialBalance = 1000000000 wei;
 
@@ -27,6 +29,7 @@ contract VickreyAuctionTestAdvanced {
         alice = new VickreyAuctionBidder(testAuction, bytes32(bidderCounter));
         bob = new VickreyAuctionBidder(testAuction, bytes32(bidderCounter));
         carol = new VickreyAuctionBidder(testAuction, bytes32(bidderCounter));
+        david = new VickreyAuctionBidder(testAuction, bytes32(bidderCounter));
     }
 
     function commitBid(VickreyAuctionBidder bidder,
@@ -79,6 +82,7 @@ contract VickreyAuctionTestAdvanced {
         commitBid(bob, 300, 9, true, "valid bid commitment should be accepted");
         revealBid(bob, 300, 19, true, "valid bid reveal should be accepted");
         t.setTime(20);
+        
         Assert.equal(address(bob), testAuction.getWinner(), "winner should be declared after auction end");
         testAuction.finalize();
         Assert.equal(bob.balance, 1000, "winner should received partial refund");
@@ -136,5 +140,33 @@ contract VickreyAuctionTestAdvanced {
         Assert.equal(alice.balance, 1500, "loser should received full refund");
         Assert.equal(bob.balance, 1617, "loser should received full refund");
         Assert.equal(carol.balance, 1033, "winner should received partial refund");
+    }
+
+    function testMultipleBiddersThree() public {
+        setupContracts();
+
+
+
+        commitBid(alice, 500, 1, true, "correct bid should be accepted");
+        commitBid(bob, 617, 2, true, "correct bid should be accepted");
+        commitBid(carol, 650, 3, true, "correct bid should be accepted");
+        commitBid(david, 660, 4, true, "correct bid should be accepted");
+
+        revealBid(carol, 650, 14, true, "correct bid reveal should be accepted");
+        revealBid(alice, 500, 15, true, "correct bid reveal should be accepted");
+        revealBid(bob, 617, 16, true, "correct bid reveal should be accepted");
+        revealBid(david, 660, 17, true, "correct bid reveal should be accepted");
+        revealBid(david, 100, 18, false, "correct bid reveal should be accepted");
+
+        commitBid(alice, 500, 19, false, "incorrect bid reveal shouldnt be accepted");
+
+        t.setTime(20);
+
+        Assert.equal(address(david), testAuction.getWinner(), "winner should be declared after auction end");
+        testAuction.finalize();
+        Assert.equal(alice.balance, 2500, "loser should received full refund");
+        Assert.equal(bob.balance, 1617, "loser should received full refund");
+        Assert.equal(carol.balance, 1650, "winner should received partial refund");
+        Assert.equal(david.balance, 1110, "winner should received partial refund");
     }
 }
