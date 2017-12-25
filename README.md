@@ -1,11 +1,11 @@
 # Solidity Auction House Simulator
-This simulator implements 4 different auction styles
+This simulator implements 3 different auction styles
 1. Dutch Auction
-  - Price descends until some bidder is willing to pay it
+    - Price descends until some bidder is willing to pay it
 2. English auction
-  - New bids increase the price until no new bid has been posted for a fixed number of blocks.
+    - New bids increase the price until no new bid has been posted for a fixed number of blocks.
 3. Vickrey auction
-  - Bidders submit sealed bid commitments and later reveal them. Highest revealed bid wins but pays only the price of the second highest revealed bid. Bidders who don’t reveal forfeit a deposit. 
+    - Bidders submit sealed bid commitments and later reveal them. Highest revealed bid wins but pays only the price of the second highest revealed bid. Bidders who don’t reveal forfeit a deposit.
 
 ## Instructions
 Here​​ are​ t​he ​​instructions ​​to ​​install ​​the​ ​required​​ dependencies ​​and ​​run ​​the auction simulator:
